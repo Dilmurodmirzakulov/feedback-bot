@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator — Admin</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- QRCode.js library (no build step needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body class="admin-page">
+  <div class="page-wrapper">
+    <header class="header">
+      <div class="header-logo">🎓</div>
+      <span class="header-label">WIUT Feedback Bot — Admin</span>
+    </header>
+
+    <div class="card">
+      <h1 class="admin-title">QR Code Generator</h1>
+      <p class="admin-subtitle">
+        Enter the public URL where the feedback app is hosted, then click <strong>Generate QR Codes</strong>.
+        Each canteen gets a unique QR code linking to its feedback form.
+      </p>
+
+      <!-- Base URL input -->
+      <div class="base-url-row">
+        <input type="url" id="base-url" placeholder="e.g. https://feedback.wiut.uz  or  http://localhost:3000"
+          value="" />
+        <button class="btn-generate" onclick="generateAll()">Generate QR Codes</button>
+      </div>
+
+      <!-- QR code grid -->
+      <div id="qr-grid" class="qr-grid"></div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+
+</html>

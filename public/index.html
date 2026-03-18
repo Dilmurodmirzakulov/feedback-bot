@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canteen Feedback</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <header class="header">
+      <div class="header-logo">🎓</div>
+      <span class="header-label">WIUT Canteen Feedback</span>
+    </header>
+
+    <!-- Loading state -->
+    <div id="loading" class="state-screen">
+      <div class="spinner"></div>
+      <p>Loading…</p>
+    </div>
+
+    <!-- Error: unknown canteen -->
+    <div id="error-screen" class="state-screen hidden">
+      <div class="state-icon">❌</div>
+      <h2>Invalid QR Code</h2>
+      <p>This QR code is not linked to a valid canteen. Please scan a valid QR code.</p>
+    </div>
+
+    <!-- Feedback form -->
+    <main id="form-screen" class="card hidden">
+      <div class="canteen-badge">
+        <span class="canteen-icon">🍽️</span>
+        <span id="canteen-name" class="canteen-name">Canteen</span>
+      </div>
+
+      <h1 class="form-title">Leave Your Feedback</h1>
+      <p class="form-subtitle">Your submission is completely anonymous.</p>
+
+      <form id="feedback-form" novalidate>
+        <!-- Type selector -->
+        <fieldset class="type-group">
+          <legend class="field-label">Type of feedback</legend>
+          <div class="type-options">
+            <label class="type-card" data-type="feedback">
+              <input type="radio" name="type" value="feedback" />
+              <span class="type-icon">💬</span>
+              <span class="type-text">Feedback</span>
+            </label>
+            <label class="type-card" data-type="complaint">
+              <input type="radio" name="type" value="complaint" />
+              <span class="type-icon">⚠️</span>
+              <span class="type-text">Complaint</span>
+            </label>
+            <label class="type-card" data-type="recommendation">
+              <input type="radio" name="type" value="recommendation" />
+              <span class="type-icon">💡</span>
+              <span class="type-text">Recommendation</span>
+            </label>
+          </div>
+          <p id="type-error" class="field-error hidden">Please select a type.</p>
+        </fieldset>
+
+        <!-- Message -->
+        <div class="field-group">
+          <label class="field-label" for="message">Your message</label>
+          <textarea id="message" name="message" placeholder="Write your feedback here…" rows="5"
+            maxlength="2000"></textarea>
+          <div class="textarea-footer">
+            <p id="message-error" class="field-error hidden">Please enter a message (at least 5 characters).</p>
+            <span id="char-count" class="char-count">0 / 2000</span>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" id="submit-btn" class="btn-submit">
+          <span id="btn-label">Send Feedback</span>
+          <span id="btn-spinner" class="btn-spinner hidden"></span>
+        </button>
+      </form>
+    </main>
+
+    <!-- Success screen -->
+    <div id="success-screen" class="card hidden success-card">
+      <div class="success-icon">✅</div>
+      <h2>Thank You!</h2>
+      <p>Your feedback has been submitted anonymously.<br />We appreciate your time.</p>
+      <button class="btn-secondary" onclick="resetForm()">Submit Another</button>
+    </div>
+  </div>
+
+  <script src="form.js"></script>
+</body>
+
+</html>
