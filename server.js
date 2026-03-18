@@ -122,9 +122,14 @@ function escapeMarkdown(text) {
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`\n✅  Feedback Bot running at http://localhost:${PORT}`);
-  console.log(
-    `📋  Admin / QR Generator:  http://localhost:${PORT}/admin.html\n`,
-  );
-});
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`\n✅  Feedback Bot running at http://localhost:${PORT}`);
+    console.log(
+      `📋  Admin / QR Generator:  http://localhost:${PORT}/admin.html\n`,
+    );
+  });
+}
+
+module.exports = app;
