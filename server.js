@@ -15,9 +15,6 @@ const CANTEENS = [
   { id: "student-canteen", name: "Student Center Canteen" },
 ];
 
-const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
-
 // ─── API: Get canteen list (used by admin QR page) ────────────────────────────
 app.get("/api/canteens", (req, res) => {
   res.json(CANTEENS);
@@ -70,36 +67,39 @@ app.post("/api/feedback", async (req, res) => {
     minute: "2-digit",
   });
 
-  const text =
-    `🏫 *Canteen:* ${escapeMarkdown(canteen.name)}\n` +
-    `${emoji} *Type:* ${label}\n` +
-    `──────────────────\n` +
-    `📝 ${escapeMarkdown(message.trim())}\n` +
-    `──────────────────\n` +
-    `🕐 ${now}`;
+  const botToken = process.env.TELEGRAM_BOT_TOKEN?.trim();
+  const chatId = process.env.TELEGRAM_CHAT_ID?.trim();
+  const text = [
+    `🏫 Canteen: ${canteen.name}`,
+    `${emoji} Type: ${label}`,
+    "------------------",
+    `📝 ${message.trim()}`,
+    "------------------",
+    `🕐 ${now}`,
+  ].join("\n");
 
   try {
-    if (!BOT_TOKEN || BOT_TOKEN === "your_bot_token_here") {
+    if (!botToken || botToken === "your_bot_token_here") {
       throw new Error("TELEGRAM_BOT_TOKEN is not configured in .env");
     }
-    if (!CHAT_ID || CHAT_ID === "your_chat_id_here") {
+    if (!chatId || chatId === "your_chat_id_here") {
       throw new Error("TELEGRAM_CHAT_ID is not configured in .env");
     }
 
     const response = await fetch(
-      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+      `https://api.telegram.org/bot${botToken}/sendMessage`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          chat_id: CHAT_ID,
+          chat_id: chatId,
           text,
-          parse_mode: "Markdown",
         }),
       },
     );
 
-    const data = await response.json();
+    const rawResponse = await response.text();
+    const data = rawResponse ? JSON.parse(rawResponse) : {};
 
     if (!data.ok) {
       throw new Error(`Telegram API error: ${data.description}`);
@@ -113,12 +113,6 @@ app.post("/api/feedback", async (req, res) => {
       .json({ error: "Could not deliver your feedback. Please try again." });
   }
 });
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-function escapeMarkdown(text) {
-  // Escape Markdown special characters for Telegram MarkdownV1
-  return text.replace(/([_*[\]()])/g, "\\$1");
-}
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
