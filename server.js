@@ -13,6 +13,7 @@ const CANTEENS = [
   { id: "library-canteen", name: "Library Canteen (Block B)" },
   { id: "sports-canteen", name: "Sports Complex Canteen" },
   { id: "student-canteen", name: "Student Center Canteen" },
+  { id: "tobb-canteen", name: "TOBB Building Canteen" },
 ];
 
 // ─── API: Get canteen list (used by admin QR page) ────────────────────────────
